@@ -1,7 +1,13 @@
 CREATE DATABASE IF NOT EXISTS myBookshop;
 USE myBookshop;
-CREATE TABLE IF NOT EXISTS books (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(50),price DECIMAL(5, 2) unsigned);
-INSERT INTO books (name, price) VALUES('database book', 40.25),('Node.js book', 25.00), ('Express book', 31.99);
+CREATE TABLE IF NOT EXISTS books (id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(50),
+price DECIMAL(5, 2) unsigned);
+
+INSERT INTO books (name, price) VALUES
+('database book', 40.25),
+('Node.js book', 25.00),
+('Express book', 31.99);
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
