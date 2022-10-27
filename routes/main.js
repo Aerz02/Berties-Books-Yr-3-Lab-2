@@ -70,7 +70,7 @@ module.exports = (app, shopData) => {
                 bcrypt.compare(req.body.password, user.password, (err, result) => {
                     if (err) {
                         console.error(err.message);
-                        
+
                     }
                     else if (result) {
                         res.send(req.body.username + " has logged in successfully")
@@ -107,6 +107,36 @@ module.exports = (app, shopData) => {
         });
     });
 
+    app.get('/deleteusers', (req, res) => {
+        res.render('deleteusers.ejs', shopData);
+    });
+    app.post('/deleteduser', (req, res) => {
+        let username = req.body.username;
+        let sqlquery1 = "SELECT * FROM users WHERE username = ? ";
+        db.query(sqlquery1, username, (err, result) => {
+            console.log(result);
+            if (err) {
+                console.error(err.message);
+            }
+            else if(result ==[]){
+                console.log("Username: " + username + " doesn't exist");
+            }
+            else {
+                console.log("Username: " + username + " exists");
+                let sqlquery2 = 'DELETE FROM users WHERE username = ? ';
+                db.query(sqlquery2, username, (err, result) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    else {
+                        res.send("User " + username + " has been deleted")
+                    }
+                });
+            }
+        });
+
+
+    });
     app.get('/addbook', (req, res) => {
         res.render('addbook.ejs', shopData);
     });
@@ -119,13 +149,6 @@ module.exports = (app, shopData) => {
         db.query(sqlquery, newrecord, (err, result) => {
             if (err) {
                 return console.error(err.message);
-            }
-            else {
-                let button = document.createElement("button");
-                button.value("Add another book");
-                document.body.appendChild(button);
-                button.onclick(button.redirect('/addbook'));
-                res.send(' This book is added to database, name: ' + req.body.name + ' price ' + req.body.price);
             }
         });
     });
