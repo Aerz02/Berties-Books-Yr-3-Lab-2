@@ -56,27 +56,27 @@ module.exports = (app, shopData) => {
     app.get('/login', (req, res) => { res.render('login.ejs', shopData) });
 
     app.post('/loggedin', (req, res) => {
+        let username = req.body.username;
         let sqlquery = "SELECT username, password FROM users WHERE username = ? ";
-        db.query(sqlquery, req.body.username, (err, result) => {
+        db.query(sqlquery, username, (err, result) => {
             let user = result[0];
             console.log(user);
             if (err) {
                 console.log(err.message);
-                res.send("Username:" + req.body.username + "doesn't exist");
+                res.send("Username:" + username + "doesn't exist");
             }
             else {
-                res.send("Username " + req.body.username + " exists");
                 // Compare the password supplied with the password in the database
                 bcrypt.compare(req.body.password, user.password, (err, result) => {
                     if (err) {
                         console.error(err.message);
-                        res.send("Incorrect Password")
+                        
                     }
                     else if (result) {
                         res.send(req.body.username + " has logged in successfully")
                     }
                     else {
-                        res.send("Smething went wrong")
+                        res.send("Incorrect Password")
                     }
                 });
             }
