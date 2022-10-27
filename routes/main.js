@@ -29,7 +29,7 @@ module.exports = (app, shopData) => {
     // register page
     app.get('/register', (req, res) => res.render('register.ejs', shopData));
 
-    // registered
+    // registering user to database
     app.post('/registered', (req, res) => {
         // saving data in database
         const saltRounds = 10;
@@ -54,8 +54,9 @@ module.exports = (app, shopData) => {
 
     // login page
     app.get('/login', (req, res) => { res.render('login.ejs', shopData) });
-
+    // logged in 
     app.post('/loggedin', (req, res) => {
+        //checks if user exists
         let username = req.body.username;
         let sqlquery = "SELECT username, password FROM users WHERE username = ? ";
         db.query(sqlquery, username, (err, result) => {
@@ -82,7 +83,7 @@ module.exports = (app, shopData) => {
             }
         });
     });
-
+    // lists books in the database
     app.get('/list', (req, res) => {
         // execute sql query
         db.query("SELECT * FROM books", (err, result) => {
@@ -107,20 +108,25 @@ module.exports = (app, shopData) => {
         });
     });
 
+    // delete users with a given username
     app.get('/deleteusers', (req, res) => {
         res.render('deleteusers.ejs', shopData);
     });
+    // deletes user 
     app.post('/deleteduser', (req, res) => {
         let username = req.body.username;
+        // checks if username exits within the database
         let sqlquery1 = "SELECT * FROM users WHERE username = ? ";
         db.query(sqlquery1, username, (err, result) => {
             console.log(result);
             if (err) {
                 console.error(err.message);
             }
+            // if empty dataset
             else if(result ==[]){
                 console.log("Username: " + username + " doesn't exist");
             }
+            // deletes user from database
             else {
                 console.log("Username: " + username + " exists");
                 let sqlquery2 = 'DELETE FROM users WHERE username = ? ';
@@ -137,10 +143,12 @@ module.exports = (app, shopData) => {
 
 
     });
+    // add book page
     app.get('/addbook', (req, res) => {
         res.render('addbook.ejs', shopData);
     });
 
+    // add books to databases
     app.post('/bookadded', (req, res) => {
         // saving data in database
         let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)";
@@ -153,6 +161,7 @@ module.exports = (app, shopData) => {
         });
     });
 
+    // select all books below £20
     app.get('/bargainbooks', (req, res) => {
         let sqlquery = "SELECT * FROM books WHERE price < 20";
         db.query(sqlquery, (err, result) => {
