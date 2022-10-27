@@ -97,7 +97,7 @@ module.exports = (app, shopData) => {
 
     // list users page
     app.get('/listusers', (req, res) => {
-        db.query("SELECT username FROM users", (err, result) => {
+        db.query("SELECT first, last, username, email FROM users", (err, result) => {
             if (err) {
                 res.redirect('./');
             }
