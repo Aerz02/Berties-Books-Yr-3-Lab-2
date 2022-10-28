@@ -91,7 +91,6 @@ module.exports = (app, shopData) => {
                 res.redirect('./');
             }
             let newData = Object.assign({}, shopData, { availableBooks: result });
-            console.log(newData)
             res.render("list.ejs", newData)
         });
     });
@@ -103,7 +102,6 @@ module.exports = (app, shopData) => {
                 res.redirect('./');
             }
             let newData = Object.assign({}, shopData, { users: result });
-            console.log(newData)
             res.render("listusers.ejs", newData)
         });
     });
@@ -128,15 +126,16 @@ module.exports = (app, shopData) => {
             }
             // deletes user from database
             else {
-                console.log("Username: " + username + " exists");
+                console.log("User " + username + " exists");
                 let sqlquery2 = 'DELETE FROM users WHERE username = ? ';
                 db.query(sqlquery2, username, (err, result) => {
                     if (err) {
                         console.error(err.message);
                     }
                     else {
-                        res.send("User " + username + " has been deleted")
-                    }
+                        console.log("User " + username + " has been deleted");
+                        res.send("User " + username + " has been deleted");
+                    } 
                 });
             }
         });
