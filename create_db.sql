@@ -1,8 +1,6 @@
 CREATE DATABASE IF NOT EXISTS myBookshop;
 USE myBookshop;
-CREATE TABLE IF NOT EXISTS books (id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(50),
-price DECIMAL(5, 2) unsigned);
+CREATE TABLE IF NOT EXISTS books (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), price DECIMAL(5, 2) unsigned);
 
 INSERT INTO books (name, price) VALUES
 ('database book', 40.25),
@@ -18,5 +16,5 @@ CREATE TABLE IF NOT EXISTS users (
     password varchar(500),
     registration_date timestamp NULL DEFAULT CURRENT_TIMESTAMP
 );
--- CREATE USER 'appuser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'app2027';
--- GRANT ALL PRIVILEGES ON myBookshop.* TO 'appuser'@'localhost';
+CREATE USER 'appuser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'app2027';
+GRANT ALL PRIVILEGES ON myBookshop.* TO 'appuser'@'localhost';
