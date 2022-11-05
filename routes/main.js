@@ -157,6 +157,9 @@ module.exports = (app, shopData) => {
             if (err) {
                 return console.error(err.message);
             }
+            else{
+                res.send(req.body.name + " with price £" + req.body.price + " has been added")
+            }
         });
     });
 
