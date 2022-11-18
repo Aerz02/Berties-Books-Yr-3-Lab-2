@@ -3,14 +3,7 @@ module.exports = (app, shopData) => {
     
     // pasword encryption module 
     const bcrypt = require('bcrypt');
-    
-    // once logged in can pages be accessed
-    const redirectLogin = (req, res, next) => {
-        if (!req.session.userId) { res.redirect('./login') }
-        else { next(); }
-    }
-    // validation
-    const { check, validationResult } = require('express-validator');
+
     // home page route
     app.get('/', (req, res) => res.render('index.ejs', shopData));
     
@@ -41,10 +34,8 @@ module.exports = (app, shopData) => {
     
     // registering user to database
     
-    app.post('/registered', [check('email').isEmail(), check('password').isLength({min: 8}), check('first').isAlpha(), check('last').isAlpha()], (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) res.redirect('./register');
-            else {
+    app.post('/registered', (req, res) => {
+
                 // saving data in database
                 const saltRounds = 10;
                 const plainPassword = req.sanitize(req.body.password);
@@ -60,7 +51,7 @@ module.exports = (app, shopData) => {
                     msg += ' Your password is: ' + req.body.password + ' and your hashed password is: ' + hashedPassword;
                     res.send(msg);
                 });
-            }
+            
         });
         
         // login page route
@@ -92,17 +83,9 @@ module.exports = (app, shopData) => {
                 }
             });
         });
-        //logout route
-        app.get('/logout', redirectLogin, (req, res) => {
-            req.session.destroy(err => {
-                if (err) {
-                    return res.redirect('./')
-                }
-                res.send('you are now logged out. <a href=' + './' + '> Home page</a>');
-            })
-        });
+        
         // lists books in the database
-        app.get('/list', redirectLogin, (req, res) => {
+        app.get('/list', (req, res) => {
             // execute sql query
             db.query("SELECT * FROM books", (err, result) => {
                 if (err) {
@@ -114,7 +97,7 @@ module.exports = (app, shopData) => {
         });
         
         // list users page
-        app.get('/listusers', redirectLogin, (req, res) => {
+        app.get('/listusers', (req, res) => {
             db.query("SELECT first, last, username, email FROM users", (err, result) => {
                 if (err) {
                     res.redirect('./');
@@ -159,7 +142,7 @@ module.exports = (app, shopData) => {
             });
         });
         // add book page route
-        app.get('/addbook', redirectLogin, (req, res) => {
+        app.get('/addbook', (req, res) => {
             res.render('addbook.ejs', shopData);
         });
         
