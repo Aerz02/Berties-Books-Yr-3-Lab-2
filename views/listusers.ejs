@@ -9,31 +9,16 @@
 </head>
 
 <body>
-  <h1>List users of <%=shopName%>
-  </h1>
+  <h1>List users of <%=shopName%></h1>
   <table>
     <tr>
-      <th>First Name</th>
-      <th>Surname</th>
-      <th>Email</th>
-      <th>Username</th>
+      <th>First Name</th><th>Surname</th><th>Email</th><th>Username</th>
     </tr>
     <% users.forEach(function(user) { %>
       <tr>
-        <td>
-          <%= user.first %>
-        </td>
-        <td>
-          <%= user.last %>
-        </td>
-        <td>
-          <%= user.email %>
-        </td>
-        <td>
-          <%= user.username%>
-        </td>
-      </tr>
-      <% }) %>
+        <td><%= user.first %></td> <td><%= user.last %></td> <td><%= user.email %></td> <td><%= user.username%></td>
+      </tr>  
+    <% }) %>
   </table>
   <button><a href="/">Home page</a></button>
 </body>
